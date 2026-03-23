@@ -47,36 +47,32 @@ import { ref } from 'vue'
 
 const carrusel = ref(null)
 
-// AQUÍ ES DONDE PONES LOS VIDEOS
-// He creado la lista para que cada imagen busque su video correspondiente
+// Lista de películas vinculada a tus archivos 1.jpg, 2.jpg, etc.
 const listaPeliculas = ref(
   Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
-    titulo: `Película ${i + 1}`,
-    imagen: `/posters/${i + 1}.jpg`, // Busca en public/posters/
-    // Aquí pondrías el link de YouTube o la ruta de tu video local
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' 
+    titulo: `Guerrero ${i + 1}`,
+    imagen: `/posters/${i + 1}.jpg`, // Ruta a la carpeta public
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' // Link de video
   }))
 )
 
 const scrollLeft = () => carrusel.value.scrollBy({ left: -600, behavior: 'smooth' })
 const scrollRight = () => carrusel.value.scrollBy({ left: 600, behavior: 'smooth' })
 
-// Función para abrir el video
 const reproducirVideo = (url) => {
-  // Por ahora abre una nueva ventana, luego podemos hacer un Modal (ventana flotante)
   window.open(url, '_blank')
 }
 </script>
 
 <style scoped>
 .streaming-container { background: #080808; color: white; min-height: 100vh; }
-.navbar { display: flex; justify-content: space-between; padding: 20px 5%; background: black; }
+.navbar { display: flex; justify-content: space-between; padding: 20px 5%; background: black; align-items: center; }
 .logo { color: #00ff41; font-weight: bold; font-size: 1.5rem; text-shadow: 0 0 10px #00ff41; }
 .btn-login { background: #e50914; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; }
 
 .hero { 
-  height: 45vh; 
+  height: 40vh; 
   display: flex; 
   align-items: center; 
   padding: 0 5%;
@@ -104,7 +100,6 @@ const reproducirVideo = (url) => {
   position: relative;
 }
 
-/* EFECTO ZOOM NEÓN */
 .movie-card:hover { 
   transform: scale(1.3) translateY(-10px); 
   z-index: 50; 
@@ -118,7 +113,7 @@ const reproducirVideo = (url) => {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.8);
   padding: 10px;
   text-align: center;
   opacity: 0;
