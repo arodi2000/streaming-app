@@ -1,37 +1,42 @@
 <template>
   <div class="streaming-container">
+    <header class="navbar">
+      <div class="logo">PRÍNCIPE STREAM</div>
+      <nav>
+        <NuxtLink to="/" class="nav-link">Inicio</NuxtLink>
+        <NuxtLink to="/login" class="btn-login">Entrar</NuxtLink>
+      </nav>
+    </header>
+
     <section class="hero">
       <div class="hero-content">
-        <h1 class="neon-title">VEGETA STREAM</h1>
-        <p>Tu dosis diaria de acción y poder Saiyajin.</p>
-        <div class="hero-btns">
-          <button class="btn-play" @click="reproducir('Principal')">▶ Reproducir</button>
-          <button class="btn-list">+ Mi Lista</button>
-        </div>
+        <h1>CATÁLOGO SAIYAJIN</h1>
+        <p>Tu poder no tiene límites, tu catálogo tampoco.</p>
       </div>
     </section>
 
     <div class="catalog">
-      <h2 class="category">Tendencias ahora</h2>
+      <h2 class="section-title">Tendencias para Ti</h2>
       
       <div class="carousel-wrapper">
-        <button class="arrow left" @click="scrollLeft">❮</button>
+        <button class="nav-btn left" @click="scrollLeft">❮</button>
         
         <div class="movie-track" ref="carrusel">
           <div 
-            v-for="peli in peliculas" 
+            v-for="peli in listaPeliculas" 
             :key="peli.id" 
             class="movie-card"
-            @click="reproducir(peli.titulo)"
+            @click="reproducirVideo(peli.videoUrl)"
           >
             <img :src="peli.imagen" :alt="peli.titulo">
-            <div class="hover-info">
+            <div class="card-overlay">
               <span>{{ peli.titulo }}</span>
+              <small>▶ Ver Trailer</small>
             </div>
           </div>
         </div>
 
-        <button class="arrow right" @click="scrollRight">❯</button>
+        <button class="nav-btn right" @click="scrollRight">❯</button>
       </div>
     </div>
   </div>
@@ -42,93 +47,96 @@ import { ref } from 'vue'
 
 const carrusel = ref(null)
 
-// Genera la lista de 50 películas automáticamente usando tus archivos 1.jpg, 2.jpg...
-const peliculas = ref(
+// AQUÍ ES DONDE PONES LOS VIDEOS
+// He creado la lista para que cada imagen busque su video correspondiente
+const listaPeliculas = ref(
   Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
     titulo: `Película ${i + 1}`,
-    imagen: `/posters/${i + 1}.jpg` 
+    imagen: `/posters/${i + 1}.jpg`, // Busca en public/posters/
+    // Aquí pondrías el link de YouTube o la ruta de tu video local
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' 
   }))
 )
 
-// Funciones de los botones para que el carrusel se mueva
-const scrollRight = () => {
-  carrusel.value.scrollBy({ left: 550, behavior: 'smooth' })
-}
+const scrollLeft = () => carrusel.value.scrollBy({ left: -600, behavior: 'smooth' })
+const scrollRight = () => carrusel.value.scrollBy({ left: 600, behavior: 'smooth' })
 
-const scrollLeft = () => {
-  carrusel.value.scrollBy({ left: -550, behavior: 'smooth' })
-}
-
-const reproducir = (titulo) => {
-  alert("Iniciando: " + titulo)
+// Función para abrir el video
+const reproducirVideo = (url) => {
+  // Por ahora abre una nueva ventana, luego podemos hacer un Modal (ventana flotante)
+  window.open(url, '_blank')
 }
 </script>
 
 <style scoped>
-.streaming-container { background: #050505; min-height: 100vh; color: #fff; overflow-x: hidden; }
+.streaming-container { background: #080808; color: white; min-height: 100vh; }
+.navbar { display: flex; justify-content: space-between; padding: 20px 5%; background: black; }
+.logo { color: #00ff41; font-weight: bold; font-size: 1.5rem; text-shadow: 0 0 10px #00ff41; }
+.btn-login { background: #e50914; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; }
 
-/* Banner */
-.hero {
-  height: 65vh;
-  background: linear-gradient(to top, #050505, transparent), 
-              url('https://wallpaperaccess.com/full/245458.jpg') no-repeat center/cover;
-  display: flex;
-  align-items: center;
+.hero { 
+  height: 45vh; 
+  display: flex; 
+  align-items: center; 
   padding: 0 5%;
+  background: linear-gradient(to right, #080808 30%, transparent), url('/logos.jpg') center/cover; 
 }
-.neon-title { font-size: 4rem; color: #00ff41; text-shadow: 0 0 20px #00ff41; margin: 0; }
 
-/* Botones */
-.btn-play { background: #fff; color: #000; border: none; padding: 12px 30px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-right: 15px; }
-.btn-list { background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer; }
-
-/* Carrusel y Efecto Zoom */
-.catalog { padding: 0 5%; margin-top: -80px; }
-.category { font-size: 1.5rem; margin-bottom: 20px; }
+.catalog { padding: 40px 5%; margin-top: -60px; }
 .carousel-wrapper { position: relative; display: flex; align-items: center; }
 
-.movie-track {
-  display: flex;
-  gap: 15px;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  padding: 40px 0;
+.movie-track { 
+  display: flex; 
+  gap: 15px; 
+  overflow-x: hidden; 
+  scroll-behavior: smooth; 
+  padding: 40px 0; 
 }
 
-.movie-card {
-  min-width: 200px;
-  height: 300px;
+.movie-card { 
+  min-width: 200px; 
+  height: 300px; 
+  transition: all 0.4s ease; 
+  border-radius: 8px; 
+  overflow: hidden;
+  cursor: pointer;
   position: relative;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  border-radius: 8px;
 }
 
-/* EL EFECTO QUE PEDISTE: Zoom y Neón al señalar */
-.movie-card:hover {
-  transform: scale(1.35) translateY(-10px);
-  z-index: 100;
-  box-shadow: 0 0 25px #00ff41;
-  border: 2px solid #00ff41;
+/* EFECTO ZOOM NEÓN */
+.movie-card:hover { 
+  transform: scale(1.3) translateY(-10px); 
+  z-index: 50; 
+  box-shadow: 0 0 20px #00ff41; 
+  border: 2px solid #00ff41; 
 }
 
-.movie-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+.movie-card img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Navegación */
-.arrow {
+.card-overlay {
   position: absolute;
-  z-index: 110;
-  background: rgba(0,0,0,0.6);
-  color: #00ff41;
-  border: none;
-  height: 80%;
-  width: 50px;
-  cursor: pointer;
-  font-size: 2.5rem;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.7);
+  padding: 10px;
+  text-align: center;
+  opacity: 0;
   transition: 0.3s;
 }
-.arrow:hover { background: #00ff41; color: #000; }
-.left { left: -30px; }
-.right { right: -30px; }
-</style>    
+
+.movie-card:hover .card-overlay { opacity: 1; }
+
+.nav-btn { 
+  position: absolute; 
+  z-index: 100; 
+  background: rgba(0,0,0,0.8); 
+  color: #00ff41; 
+  border: none; 
+  font-size: 2.5rem; 
+  padding: 15px; 
+  cursor: pointer; 
+}
+.left { left: -25px; }
+.right { right: -25px; }
+</style>
