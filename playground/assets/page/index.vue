@@ -1,29 +1,13 @@
 <template>
-  <div class="main-content">
-    <section class="hero">
-      <h1>Películas Tendencia</h1>
-    </section>
-
-    <div class="carousel-container">
-      <h2>Mi Lista</h2>
-      <div class="carousel">
-        <div v-for="i in 10" :key="i" class="movie-card">
-          <img :src="`https://picsum.photos/200/300?random=${i}`" alt="Pelicula">
-        </div>
+  <div>
+    <h2>Bienvenido a tu plataforma</h2>
+    <p>El sistema de streaming está listo para recibir contenido.</p>
+    
+    <div style="display: flex; gap: 20px; overflow-x: auto; padding: 20px 0;">
+      <div v-for="i in 5" :key="i" 
+           style="min-width: 200px; height: 300px; background: #333; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+        Película {{ i }}
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.main-content { padding-top: 100px; }
-.carousel-container { padding: 20px 50px; }
-.carousel {
-  display: flex;
-  gap: 15px;
-  overflow-x: scroll; /* Carrusel manual con scroll */
-  padding: 20px 0;
-}
-.carousel::-webkit-scrollbar { display: none; } /* Oculta la barra de scroll */
-.movie-card img { width: 200px; border-radius: 5px; }
-</style>
